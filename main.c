@@ -119,17 +119,53 @@ double **EliminacaoGaussiana(double **M, int m, int n)
   return M;
 }
 
+double TestaSistema(double **M, int m1, int m2, double *Raizes)
+{
+  
+}
+
+double **MultiplicaMatriz(double **M, int m1, int m2, double **N, int n1, int n2)
+{
+  double **S,t;
+  int i, j,k;
+  
+  if(m2!=n1)
+  {
+    printf("A mutiplicacao nao pode ser feita!\n"); 
+    return NULL;
+  }
+  
+  S=malloc(m1*sizeof(double *));
+  for(i=0; i<m1; i++) S[i]=malloc(n2 * sizeof(double));
+
+  for(i=0; i<m1; i++)
+  {
+    for(j=0; j<n2; j++)
+    {
+      t=0;
+      for(k=0; k<m2; k++)
+      {
+        t+=M[i][k]*N[k][j];
+      }
+      S[i][j]=t;
+    }
+  }
+  
+  return S;
+}
+
 int main(int argc, char **argv) 
 {
-  double **M, **Triang, *Raizes;
+  double **M, **Triang, *Raizes,Soma;
   int m1, m2; 
-
+  
   M = LeMatriz(argv[1], &m1, &m2);
   ImprimeMatriz(M, m1, m2);
   Triang = EliminacaoGaussiana(M, m1, m2);
   ImprimeMatriz(Triang, m1, m2);
   Raizes = SubstituicaoReversa(Triang, m1, m2);
   ImprimeVetor(Raizes, m1);
-
+  Soma = TestaSistema(M, m1, m2, Raizes);
+  if(Soma) printf("Sistema resolvido corretamente\n");
   return 0;
 }
