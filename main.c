@@ -25,20 +25,23 @@ double** LeMatriz(char nome[20],int *m, int *n)
       fscanf(arq,"%lf",&a[i][j]);
     }
   }
+  
   return a;
 }
 
 void ImprimeMatriz(double **M, int m, int n)
 {
   int i,j;
+  
   for (i=0; i<m; i++) 
   {
     for(j=0;j<n;j++)
-      {
-        printf("%.2lf ",M[i][j]);
-      }
+    {
+      printf("%.2lf ",M[i][j]);
+    }
     puts("");
   }  
+  puts("");
 }
 
 void ImprimeVetor(double *V, int m)
@@ -53,8 +56,10 @@ void ImprimeVetor(double *V, int m)
 
 double *SubstituicaoReversa(double **M, int m, int n)
 {
-  double S[m],t;
+  double *S,t;
   int i,j;
+  
+  S= malloc(m* sizeof(double));
   
   for(i=m-1;i>=0;i--)
   {
@@ -65,11 +70,6 @@ double *SubstituicaoReversa(double **M, int m, int n)
     }
     S[i]=(M[i][n-1]-t)/M[i][i];
   }
-  
-  for(i=0; i<m; i++)
-    {
-      printf("%.2lf\t",S[i]);
-    }
   
   return S;
 }
@@ -130,5 +130,6 @@ int main(int argc, char **argv)
   ImprimeMatriz(Triang, m1, m2);
   Raizes = SubstituicaoReversa(Triang, m1, m2);
   ImprimeVetor(Raizes, m1);
+
   return 0;
 }
