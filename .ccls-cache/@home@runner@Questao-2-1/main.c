@@ -85,25 +85,30 @@ void TrocaLinhaMestre(double **k, double **l)
 
 double **EliminacaoGaussiana(double **M, int m, int n)
 {
-  int i,j,k,k2;
-  double l;
+  int i,j,k,troca;  
+  double l,pivot;
   
   for(k=0; k<n-1;k++)
   {
-    if(M[k][k]==0)
+    pivot=M[k][k];
+    troca=k;
+    
+    for(j=k;j<m-1;j++)
     {
-      k2=k+1;
-      while((M[k2][k]==0) && (k2<m))
+      if(fabs(M[j][k])>fabs(pivot))
       {
-        k2++;
+        pivot= fabs(M[j][k]);
+        troca=j;
       }
-      if(k2==m)
-      {
-        printf("Sistema sem solucao!\n");
-        return M;
-      }
-      TrocaLinhaMestre(&M[k], &M[k2]);
     }
+    
+    if(pivot==0)
+    {
+      printf("Sistema sem solucao!\n");
+      return M;
+    }
+
+    if(j!=k) TrocaLinhaMestre(&M[j],&M[k]);    
     
     for(i=k+1; i<=m-1;i++)
     { 
@@ -121,7 +126,7 @@ double **EliminacaoGaussiana(double **M, int m, int n)
 
 double TestaSistema(double **M, int m1, int m2, double *Raizes)
 {
-  
+  return 0;
 }
 
 double **MultiplicaMatriz(double **M, int m1, int m2, double **N, int n1, int n2)
@@ -167,5 +172,6 @@ int main(int argc, char **argv)
   ImprimeVetor(Raizes, m1);
   Soma = TestaSistema(M, m1, m2, Raizes);
   if(Soma) printf("Sistema resolvido corretamente\n");
+  
   return 0;
 }
