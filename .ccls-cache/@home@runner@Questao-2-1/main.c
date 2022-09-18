@@ -124,11 +124,6 @@ double **EliminacaoGaussiana(double **M, int m, int n)
   return M;
 }
 
-double TestaSistema(double **M, int m1, int m2, double *Raizes)
-{
-  return 0;
-}
-
 double **MultiplicaMatriz(double **M, int m1, int m2, double **N, int n1, int n2)
 {
   double **S,t;
@@ -159,6 +154,22 @@ double **MultiplicaMatriz(double **M, int m1, int m2, double **N, int n1, int n2
   return S;
 }
 
+double TestaSistema(double **M, int m1, int m2, double **Raizes)
+{
+  double **S,sum=0;
+  int i;
+
+  S= MultiplicaMatriz(M, m1, m1, Raizes, m1, 1);
+  /*
+  for(i=0; i<m1; i++)
+  {
+    sum+=(S[i][1])*(S[i][1]);    
+  }
+  printf("%g", sum);
+  */
+  return sum;
+}
+
 int main(int argc, char **argv) 
 {
   double **M, **Triang, *Raizes,Soma;
@@ -170,7 +181,7 @@ int main(int argc, char **argv)
   ImprimeMatriz(Triang, m1, m2);
   Raizes = SubstituicaoReversa(Triang, m1, m2);
   ImprimeVetor(Raizes, m1);
-  Soma = TestaSistema(M, m1, m2, Raizes);
+  Soma = TestaSistema(M, m1, m2, &Raizes);
   if(Soma) printf("Sistema resolvido corretamente\n");
   
   return 0;
