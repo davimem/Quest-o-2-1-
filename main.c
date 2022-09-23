@@ -154,35 +154,67 @@ double **MultiplicaMatriz(double **M, int m1, int m2, double **N, int n1, int n2
   return S;
 }
 
-double TestaSistema(double **M, int m1, int m2, double **Raizes)
+double *MultiplicaMatVet(double **M, int m1, int m2, double *N, int n1)
 {
-  double **S,sum=0;
-  int i;
+  double *S,t;
+  int i, k;
+  
+  if(m2!=n1)
+  {
+    printf("A mutiplicacao nao pode ser feita!\n"); 
+    return NULL;
+  }
+  
+  S=malloc(m1*sizeof(double));
 
-  S= MultiplicaMatriz(M, m1, m1, Raizes, m1, 1);
-  /*
   for(i=0; i<m1; i++)
   {
-    sum+=(S[i][1])*(S[i][1]);    
+    t=0;
+    for(k=0; k<m2; k++)
+    {
+      t+=M[i][k]*N[k];
+    }
+    S[i]=t;
   }
-  printf("%g", sum);
-  */
+  
+  return S;
+}
+
+double TestaSistema(double **M, int m1, int m2, double *Raizes)
+{
+  double *S,sum=0;
+  int i;
+
+  S= MultiplicaMatVet(M, m1, m1, Raizes, m1);
+  
+  for(i=0; i<m1; i++)
+  {
+    sum+=(S[i])*(S[i]);
+  }
+  
   return sum;
 }
 
 int main(int argc, char **argv) 
 {
-  double **M, **Triang, *Raizes,Soma;
-  int m1, m2; 
+  double **M, **Triang, *Raizes,Soma=0,Teste=0;
+  int m1, m2,i; 
   
   M = LeMatriz(argv[1], &m1, &m2);
   ImprimeMatriz(M, m1, m2);
+  
   Triang = EliminacaoGaussiana(M, m1, m2);
   ImprimeMatriz(Triang, m1, m2);
+  
   Raizes = SubstituicaoReversa(Triang, m1, m2);
   ImprimeVetor(Raizes, m1);
-  Soma = TestaSistema(M, m1, m2, &Raizes);
-  if(Soma) printf("Sistema resolvido corretamente\n");
   
+  Soma = TestaSistema(M, m1, m1, Raizes);
+  for(i=0; i<m1; i++)
+  {
+    Teste+=M[i][m2-1]*M[i][m2-1];
+  }
+  if(Soma==Teste) printf("Sistema resolvido corretamente\n");
+ 
   return 0;
 }
